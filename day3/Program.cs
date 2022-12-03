@@ -4,6 +4,7 @@ namespace day3
 {
     class Program
     {
+        protected static char[] priority = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
         static void Main()
         {
             string path = "../../../input.txt";
@@ -16,7 +17,7 @@ namespace day3
                 string bag = input[i];
                 compartment [i,0] = bag.Substring(0, bag.Length / 2);
                 compartment [i,1] = bag.Substring(bag.Length / 2);
-            }
+            }            
 
             int priorityScore = 0;
 
@@ -43,8 +44,7 @@ namespace day3
         }
 
         static int getPriority(string compartment1, string compartment2)
-        {
-            char[] priority = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
+        {            
             for(int i = 0; i < priority.Length; i++)
             {
                 if (compartment1.Contains(priority[i]) && compartment2.Contains(priority[i])) return i + 1;
@@ -54,7 +54,6 @@ namespace day3
 
         static int getPriority(string elf1, string elf2, string elf3)
         {
-            char[] priority = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ".ToCharArray();
             for (int i = 0; i < priority.Length; i++)
             {
                 if (elf1.Contains(priority[i]) && elf2.Contains(priority[i]) && elf3.Contains(priority[i])) return i + 1;
