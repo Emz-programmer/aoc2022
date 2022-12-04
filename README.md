@@ -12,3 +12,4 @@ https://adventofcode.com/2022
 | Day 1   | Hungy elves and their calorific intake        |     2     |
 | Day 2   | Mother, the elves are playing with themselves |     2     |
 | Day 3   | The elves have massive loads                  |     2     |
+| Day 4   | All they needed was a maids dress...          |     2     |
