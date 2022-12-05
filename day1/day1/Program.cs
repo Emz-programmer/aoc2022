@@ -6,7 +6,7 @@ namespace day1
     {
         static void Main()
         {
-            string path = "../../../input.txt";
+            string path = "../../../input2.txt";
             string[] input = File.ReadAllText(path).Split("\r\n\r\n");
             int[] elfCalories = new int[input.Length];
             
