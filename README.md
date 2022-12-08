@@ -16,3 +16,4 @@ https://adventofcode.com/2022
 | Day 5   | Massive boxes for tiny elves    	          |     2     |
 | Day 6   | Oh My! What a big package you have	          |     2     |
 | Day 7   | Elves need more space for "Homework"          |     2     |
+| Day 8   | The elves want a fabulous wooden erection     |     2     |
