@@ -8,140 +8,83 @@ namespace day8
         {
             string path = "../../../input.txt";
             string[] input = File.ReadAllText(path).Split("\r\n");
-
-
-
+            int visibleTrees = (input.Length + input[0].Length - 2) * 2;
+            int bestScenicScore = 0;
             int[,] forest = new int[input.Length, input[0].Length];
 
             for (int i = 0; i < input.Length; i++)
             {
-                char[] line = input[i].ToCharArray();
-                //Console.WriteLine();
-
-                for (int j = 0; j < line.Length; j++)
+                for (int j = 0; j < input[i].Length; j++)
                 {
-                    forest[i, j] = Convert.ToInt32(line[j]);
-                    //Console.Write(line[j]);
+                    forest[i, j] = Convert.ToInt32(input[i][j]);
                 }
             }
-
-            int visibleTrees = (input.Length + input[0].Length - 2) * 2;
-
-            int scenicScore = 0;
-
-            //tree logic
 
             for (int i = 1; i < input.Length - 1; i++)
             {
                 for (int j = 1; j < input[i].Length - 1; j++)
                 {
-                    //Console.WriteLine(i + "," + j);
+                    int scenicScore = getScenicScore(i, j, forest);
                     if (isVisible(i, j, forest))
                     {
                         visibleTrees++;
-                        if(getScenicScore(i,j,forest)>scenicScore) scenicScore = getScenicScore(i,j,forest);
-                        //Console.WriteLine(i + "," + j);
+                        if (scenicScore > bestScenicScore) bestScenicScore = scenicScore;
                     }
-
                 }
-
             }
 
-            Console.WriteLine(visibleTrees);
-            Console.WriteLine(scenicScore);
+            Console.WriteLine("Visible trees: " + visibleTrees);
+            Console.WriteLine("Scenic score:  " + bestScenicScore);
         }
 
         static bool isVisible(int x, int y, int[,] forest)
         {
             int currentTree = forest[x, y];
+            List<int>[] directions = getDirections(x, y, forest);
 
-            List<int> left = new List<int>();
-            List<int> right = new List<int>();
-            List<int> up = new List<int>();
-            List<int> down = new List<int>();
-
-            
-            for(int i = 0; i < y; i++) left.Add(forest[x, i]);        
-
-            for(int i=y+1; i<forest.GetLength(1);i++) right.Add(forest[x, i]);
-
-            for (int i = 0; i < x; i++) up.Add(forest[i, y]);
-
-            for (int i = x + 1; i < forest.GetLength(0); i++) down.Add(forest[i, y]);
-
-            if (left.Max() < currentTree) return true;
-            if (right.Max() < currentTree) return true;
-            if (up.Max() < currentTree) return true;
-            if (down.Max() < currentTree) return true;
+            foreach (List<int> direction in directions)
+            {
+                if (direction.Max() < currentTree) return true;
+            }
 
             return false;
         }
 
-        static int getScenicScore(int x, int y, int [,] forest)
+        static int getScenicScore(int x, int y, int[,] forest)
         {
-            //Amount of trees that can be seen from x,y
-
+            int[] scenicScores = { 0, 0, 0, 0 };
             int currentTree = forest[x, y];
-            
+            List<int>[] directions = getDirections(x, y, forest);
 
-            int leftScore = 0;
-            int rightScore = 0;
-            int upScore = 0;
-            int downScore = 0;
-
-            List<int> left = new List<int>();
-            List<int> right = new List<int>();
-            List<int> up = new List<int>();
-            List<int> down = new List<int>();
-
-            for (int i = 0; i < y; i++) left.Add(forest[x, i]);
-            for (int i = y + 1; i < forest.GetLength(1); i++) right.Add(forest[x, i]);
-            for (int i = 0; i < x; i++) up.Add(forest[i, y]);
-            for (int i = x + 1; i < forest.GetLength(0); i++) down.Add(forest[i, y]);
-            //left
-            for(int i = left.Count - 1; i >= 0; i--)
+            for (int i = 0; i < scenicScores.Length; i++)
             {
-                if (left[i] < currentTree) leftScore++;
-                else
+                for (int j = 0; j < directions[i].Count; j++)
                 {
-                    leftScore++;
-                    break;
-                }
-            }
-            for(int i=0; i< right.Count; i++)
-            {
-                if (right[i] < currentTree) rightScore++;
-                else
-                {
-                    rightScore++;
-                    break;
-                }
-            }
-            for(int i=up.Count - 1;i >= 0; i--)
-            {
-                if (up[i] < currentTree) upScore++;
-                else
-                {
-                    upScore++;
-                    break;
-                }
-            }
-            for(int i=0; i < down.Count; i++)
-            {
-                if (down[i] < currentTree) downScore++;
-                else
-                {
-                    downScore++;
-                    break;
+                    scenicScores[i]++;
+                    if (directions[i][j] >= currentTree) break;
                 }
             }
 
-
-
-            return leftScore*rightScore*upScore*downScore;
+            return scenicScores.Aggregate((val1, val2) => val1 * val2);
         }
 
-        
+        static List<int>[] getDirections(int x, int y, int[,] forest)
+        {
+            List<int>[] directions = new List<int>[4];
 
+            for (int i = 0; i < directions.Length; i++)
+            {
+                directions[i] = new List<int>();
+            }
+
+            for (int i = 0; i < y; i++) directions[0].Add(forest[x, i]); // Left
+            for (int i = 0; i < x; i++) directions[1].Add(forest[i, y]); // Up
+            for (int i = y + 1; i < forest.GetLength(1); i++) directions[2].Add(forest[x, i]); // Right
+            for (int i = x + 1; i < forest.GetLength(0); i++) directions[3].Add(forest[i, y]); // Down
+
+            directions[0].Reverse();
+            directions[1].Reverse();
+            return directions;
+        }
     }
 }
