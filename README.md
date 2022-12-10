@@ -17,3 +17,5 @@ https://adventofcode.com/2022
 | Day 6   | Oh My! What a big package you have	          |     2     |
 | Day 7   | Elves need more space for "Homework"          |     2     |
 | Day 8   | The elves want a fabulous wooden erection     |     2     |
+| Day 9   | still under construction :(     |     1     |
+| Day 10  | Rendering naughty elf content     |     2     |
