@@ -2,6 +2,7 @@
 using System.Text.RegularExpressions;
 using System.Numerics;
 
+
 namespace day11
 {
     class Program
@@ -34,7 +35,7 @@ namespace day11
 
             //20 rounds
 
-            for(int i=0; i < 20; i++)
+            for(int i=0; i < 10000; i++)
             {
                 if(i%100 == 0)Console.WriteLine("Crunching round: "+i);
                 foreach (Monkey monkey in monkeys)
@@ -43,22 +44,22 @@ namespace day11
                     {
                         BigInteger item = monkey.Operation(monkey.Pop());
                         int targetMonkey = monkey.Test();                        
-                        monkeys[targetMonkey].Push(item/3);
+                        monkeys[targetMonkey].Push(item);
                     }                    
                 }
             }
-            List<ulong> touched = new List<ulong>();
+            List<BigInteger> touched = new List<BigInteger>();
             index = 0;
             foreach(Monkey monkey in monkeys)
             {
                 touched.Add((ulong)monkey.touched);
-                Console.WriteLine(monkey.touched);
-                //Console.Write("\nMonkey "+index+": ");
+                //Console.WriteLine(monkey.touched);
+                Console.Write("\nMonkey "+index+": ");
                 index++;
-                /*while (monkey.HasItems())
+                while (monkey.HasItems())
                 {
                    Console.Write(monkey.Pop()+", ");
-                }*/
+                }
                 
                 
             }
@@ -97,7 +98,7 @@ namespace day11
         }
 
         public BigInteger Operation(BigInteger old)
-        {
+        {            
             string []equation = operation.Split("= ");
             equation = equation[1].Split(' ');
             BigInteger[] num = new BigInteger[2];
@@ -116,18 +117,21 @@ namespace day11
                 case "+": operationResult = BigInteger.Add(num[0], num[1]); break;
                 case "*":
                     if (num[0] != num[1]) operationResult = BigInteger.Multiply(num[0], num[1]);
-                    else operationResult = BigInteger.Pow(num[0],2) ; 
+                    else operationResult = BigInteger.Pow(num[0], 2) ; 
                     break;
                 default: break;
             }
-            
+            operationResult %= 9699690;
+
+
             return operationResult;
         }
 
         public int Test()
         {
-            operationResult %= 9699690;
-            if (BigInteger.ModPow(operationResult/3, 1, testDivisor) == 0) return trueCase;
+            //operationResult %= 9699690;
+            //Console.WriteLine(operationResult%3 + "," + operationResult% 9699690 %3);
+            if (BigInteger.ModPow(operationResult, 9699690, testDivisor) == 0) return trueCase;
             return falseCase;            
         }
 
@@ -139,7 +143,7 @@ namespace day11
 
         public void Push(BigInteger item)
         {
-            items.Push(item);
+            items.Push(item% 9699690);
             //touched++;
         }
 
