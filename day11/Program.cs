@@ -30,20 +30,20 @@ namespace day11
             }
 
 
-            
+            //Console.WriteLine(Karasuba.fastMultiply(45,20));
 
             //20 rounds
 
-            for(int i=0; i <10000; i++)
+            for(int i=0; i < 20; i++)
             {
-                if (i % 100 == 0) Console.WriteLine("Crunching round: "+i);
+                if(i%100 == 0)Console.WriteLine("Crunching round: "+i);
                 foreach (Monkey monkey in monkeys)
                 {
                     while (monkey.HasItems())
                     {
                         BigInteger item = monkey.Operation(monkey.Pop());
-                        int targetMonkey = monkey.Test();
-                        monkeys[targetMonkey].Push(item);
+                        int targetMonkey = monkey.Test();                        
+                        monkeys[targetMonkey].Push(item/3);
                     }                    
                 }
             }
@@ -60,6 +60,7 @@ namespace day11
                    Console.Write(monkey.Pop()+", ");
                 }*/
                 
+                
             }
 
             touched.Sort();
@@ -71,7 +72,7 @@ namespace day11
     class Monkey
     {
         string operation;
-        ulong testDivisor;
+        public ulong testDivisor;
         BigInteger operationResult = 0;
         Stack<BigInteger> items = new Stack<BigInteger>();
         int trueCase;
@@ -113,7 +114,10 @@ namespace day11
                 //case "+": operationResult= num[0]+num[1]; break;
                 //case "*": operationResult= num[0]*num[1]; break;
                 case "+": operationResult = BigInteger.Add(num[0], num[1]); break;
-                case "*": operationResult = BigInteger.Multiply(num[0],num[1]); break;
+                case "*":
+                    if (num[0] != num[1]) operationResult = BigInteger.Multiply(num[0], num[1]);
+                    else operationResult = BigInteger.Pow(num[0],2) ; 
+                    break;
                 default: break;
             }
             
@@ -122,7 +126,8 @@ namespace day11
 
         public int Test()
         {
-            if ((operationResult) % testDivisor == 0) return trueCase;
+            operationResult %= 9699690;
+            if (BigInteger.ModPow(operationResult/3, 1, testDivisor) == 0) return trueCase;
             return falseCase;            
         }
 
@@ -143,4 +148,5 @@ namespace day11
             return items.Count > 0;
         }
     }
+
 }
