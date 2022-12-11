@@ -19,3 +19,4 @@ https://adventofcode.com/2022
 | Day 8   | The elves want a fabulous wooden erection     |     2     |
 | Day 9   | still under construction :(     |     1     |
 | Day 10  | Rendering naughty elf content     |     2     |
+| Day 11  | Fuck this piggy in the middle bs!     |     2     |
